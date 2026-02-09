@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../news_details/news_details_screen.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -15,34 +16,24 @@ class HomeTab extends StatelessWidget {
           children: [
             const SizedBox(height: 12),
 
-            /// Breaking News Title
-            _sectionHeader(
-              title: "Breaking News",
-              onViewAll: () {},
-            ),
+            _sectionHeader(title: "Breaking News", onViewAll: () {}),
 
             const SizedBox(height: 12),
 
-            /// Breaking News Slider
             _breakingNewsSlider(),
 
             const SizedBox(height: 8),
 
-            /// Dots Indicator
             _dotsIndicator(),
 
             const SizedBox(height: 24),
 
-            /// Recommendation Title
-            _sectionHeader(
-              title: "Recommendation",
-              onViewAll: () {},
-            ),
+            _sectionHeader(title: "Recommendation", onViewAll: () {}),
 
             const SizedBox(height: 16),
 
-            /// Recommendation List
             _recommendationItem(
+              context: context,
               imagePath: "assets/images/reco1.png",
               title: "Highguard boss says the player count “doesn’t matter”",
               source: "Dexerto",
@@ -52,6 +43,7 @@ class HomeTab extends StatelessWidget {
             const SizedBox(height: 16),
 
             _recommendationItem(
+              context: context,
               imagePath: "assets/images/reco2.png",
               title: "Teamfight Tactics patch 16.4 - Teamfight Tactics",
               source: "Leagueoflegends.com",
@@ -59,6 +51,7 @@ class HomeTab extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _recommendationItem(
+              context: context,
               imagePath: "assets/images/reco1.png",
               title: "Highguard boss says the player count “doesn’t matter”",
               source: "Dexerto",
@@ -68,6 +61,7 @@ class HomeTab extends StatelessWidget {
             const SizedBox(height: 16),
 
             _recommendationItem(
+              context: context,
               imagePath: "assets/images/reco2.png",
               title: "Teamfight Tactics patch 16.4 - Teamfight Tactics",
               source: "Leagueoflegends.com",
@@ -80,7 +74,6 @@ class HomeTab extends StatelessWidget {
     );
   }
 
-  /// ================= AppBar =================
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       elevation: 0,
@@ -102,7 +95,6 @@ class HomeTab extends StatelessWidget {
     );
   }
 
-  /// ================= Section Header =================
   Widget _sectionHeader({
     required String title,
     required VoidCallback onViewAll,
@@ -112,26 +104,19 @@ class HomeTab extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         GestureDetector(
           onTap: onViewAll,
           child: const Text(
             "View All",
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 14,
-            ),
+            style: TextStyle(color: Colors.red, fontSize: 14),
           ),
         ),
       ],
     );
   }
 
-  /// ================= Breaking News Slider =================
   Widget _breakingNewsSlider() {
     return SizedBox(
       height: 190,
@@ -152,7 +137,6 @@ class HomeTab extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
 
-                  /// Dark Overlay
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -166,7 +150,6 @@ class HomeTab extends StatelessWidget {
                     ),
                   ),
 
-                  /// Content
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -174,17 +157,16 @@ class HomeTab extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Text(
                             "CNBC",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
                         const Spacer(),
@@ -201,14 +183,11 @@ class HomeTab extends StatelessWidget {
                         const SizedBox(height: 6),
                         const Text(
                           "Liz Napolitano • 19:05",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -218,13 +197,12 @@ class HomeTab extends StatelessWidget {
     );
   }
 
-  /// ================= Dots Indicator =================
   Widget _dotsIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         5,
-            (index) => Container(
+        (index) => Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           width: index == 0 ? 16 : 8,
           height: 8,
@@ -237,50 +215,66 @@ class HomeTab extends StatelessWidget {
     );
   }
 
-  /// ================= Recommendation Item =================
   Widget _recommendationItem({
+    required BuildContext context,
     required String imagePath,
     required String title,
     required String source,
     required String time,
   }) {
-    return Row(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.asset(
-            imagePath,
-            width: 90,
-            height: 90,
-            fit: BoxFit.cover,
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => NewsDetailsScreen(
+              imagePath: imagePath,
+              title: title,
+              source: source,
+              time: time,
+              category: "General",
+              description:
+                  "Large, like Tahm Kench's appetite. TRAITS Going past Ionia (3) when it's Path of Blades is like putting an eraser on a pencil it's cool, but what does it do?",
+            ),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                "$source • $time",
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
+        );
+      },
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset(
+              imagePath,
+              width: 90,
+              height: 90,
+              fit: BoxFit.cover,
+            ),
           ),
-        )
-      ],
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "$source • $time",
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
